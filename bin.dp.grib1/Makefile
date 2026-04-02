@@ -1,6 +1,6 @@
-#Makefile
+#Makefile 
 ###############################################################################
-# Include definitions
+# Include definitions 
 ###############################################################################
 include ../include.mk
 ###############################################################################
@@ -51,8 +51,7 @@ rams_wgrib:
 
 $(EXE): $(ARC) $(MAIN) FORCE
 	@echo ""
-	$(F_COMP) -o $(EXE) $(MAIN_OBJ) $(LOADER_OPTS) $(ARC) \
-	$(HDF5_LIBS) $(LIBS) $(PAR_LIBS)
+	$(F_COMP) -o $(EXE) $(MAIN_OBJ) $(LOADER_OPTS) $(ARC)
 	rm -f *.o
 	@echo ""
 	@echo Finished building === $(EXE)
