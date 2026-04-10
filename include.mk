@@ -20,7 +20,7 @@ MAKE=/usr/bin/make
 #############################################################################
 # Set your RAMS root path and version number.
 #############################################################################
-RAMS_ROOT=/home/smsaleeb/rams_steve/RAMS
+RAMS_ROOT=/Users/mikejones/source/RAMS
 RAMS_VERSION=6.3.04
 
 #############################################################################
@@ -29,13 +29,13 @@ RAMS_VERSION=6.3.04
 # Typically can use "parallel" for either, but some supercomputers require
 # use of the serial executable.
 #############################################################################
-HDF5_ROOT=/home/smsaleeb/software/hdf5-1.10.7
+HDF5_ROOT=/opt/homebrew/opt/hdf5
 
 #############################################################################
 # Set root locations for parallel processing MPI software.
 # You can comment out MPI_ROOT for serial processing compile.
 #############################################################################
-MPI_ROOT=/home/smsaleeb/software/mpich-3.3.2
+#MPI_ROOT=/home/smsaleeb/software/mpich-3.3.2
 
 #############################################################################
 # Do not change these 2. They point from RAMS_ROOT to the source code.
@@ -93,11 +93,11 @@ CMACH=PC_LINUX1  #Standard Linux (only option available now)
 # (-check bounds) for array bounds checking, (-fp-model precise) for IEEE
 # (-check uninit) for finding uninitialized variables, (-free) for free format
 #F_COMP=/home/smsaleeb/intel/composer_xe_2011_sp1.8.273/bin/intel64/ifort
-F_COMP=/home/smsaleeb/software/mpich-3.3.2/bin/mpif90
-F_OPTS1=-free -O1 -fp-model precise
-F_OPTS2=-free -O2 -fp-model precise
-LOADER_OPTS= -free -O2 -fp-model precise
-LIBS=-L/usr/lib/x86_64-linux-gnu -lrt -lpthread -lsz -lz
+#F_COMP=/home/smsaleeb/software/mpich-3.3.2/bin/mpif90
+#F_OPTS1=-free -O1 -fp-model precise
+#F_OPTS2=-free -O2 -fp-model precise
+#LOADER_OPTS= -free -O2 -fp-model precise
+#LIBS=-L/usr/lib/x86_64-linux-gnu -lrt -lpthread -lsz -lz
 
 #*****************************
 # FORTRAN INTEL IFORT COMPILER Double Precision
@@ -130,11 +130,11 @@ LIBS=-L/usr/lib/x86_64-linux-gnu -lrt -lpthread -lsz -lz
 # (-fno-sign-zero) for not making zeros negative values
 # (-fcheck=bounds) check for array bounds issues
 # (-fcheck=all) all runtime checking
-#F_COMP=/usr/bin/gfortran
-#F_OPTS1=-ffree-form -O1
-#F_OPTS2=-ffree-form -O2
-#LOADER_OPTS=-ffree-form -O2
-#LIBS=-L/usr/lib/x86_64-linux-gnu -lrt -lpthread -lz -lsz
+F_COMP=/opt/homebrew/bin/gfortran
+F_OPTS1=-ffree-form -O1 -fallow-argument-mismatch
+F_OPTS2=-ffree-form -O2 -fallow-argument-mismatch
+LOADER_OPTS=-ffree-form -O2 -fallow-argument-mismatch
+LIBS=-lz
 
 #############################################################################
 # C compiler choice and flags (gcc) and (mpicc) are most common
@@ -156,8 +156,8 @@ LIBS=-L/usr/lib/x86_64-linux-gnu -lrt -lpthread -lsz -lz
 # that are not really as issue for us, but you can turn warnings back on by
 # removing the "-w" if you wish to alter code to eliminate warnings.
 #############################################################################
-#C_COMP=gcc
-C_COMP=/home/smsaleeb/software/mpich-3.3.2/bin/mpicc
+C_COMP=gcc
+#C_COMP=/home/smsaleeb/software/mpich-3.3.2/bin/mpicc
 C_OPTS=-O3 -DUNDERSCORE -DLITTLE -std=gnu99 -DENABLE_PARALLEL_COMPRESSION -w
 #C_OPTS=-O3 -DUNDERSCORE -DLITTLE -std=gnu99 -DRAMS_DOUBLE_PREC \
 #  -DENABLE_PARALLEL_COMPRESSION -w
@@ -168,7 +168,7 @@ C_OPTS=-O3 -DUNDERSCORE -DLITTLE -std=gnu99 -DENABLE_PARALLEL_COMPRESSION -w
 # recent versions have needed the "U" argument to prevent full RAMS recompile
 # when only changing perhaps one file that does not have lots of dependencies
 #############################################################################
-ARCH=ar rsU
+ARCH=ar rs
 
 #############################################################################
 # MPI - (Message Passing Interface) parallel processing choices required for
@@ -180,7 +180,6 @@ ARCH=ar rsU
 #  specs are: -lmpich, -lmpl, -lmpi, -lmpifort
 # Comment out these "PAR_" lines for serial processing compile.
 #############################################################################
-PAR_INCS=-I$(MPI_ROOT)/include
-#PAR_LIBS=-L$(MPI_ROOT)/lib -lmpich -lmpl
-PAR_LIBS=-L$(MPI_ROOT)/lib
-PAR_DEFS=-DRAMS_MPI
+PAR_INCS=
+PAR_LIBS=
+PAR_DEFS=
