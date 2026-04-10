@@ -60,7 +60,7 @@ allocate(ths2(m2,m3),rvs2(m2,m3),pis2(m2,m3),dens2(m2,m3) &
         ,ups2(m2,m3),vps2(m2,m3),zts2(m2,m3))
 
 ! Time interpolation factor for updating SST
-if (iupdsst == 0) then
+if (iupdsst == 0 .or. .not. has_liquid_water) then
    timefac_sst = 0.
 else
    timefac_sst = (time-ssttime1(ngrid)) / (ssttime2(ngrid)-ssttime1(ngrid))
@@ -130,7 +130,7 @@ do j = ja,jz
 ! If KPP is running, then KPP will update the SST / water-internal-energy.
 ! Note however that KPP may not be run every timestep and thus may only
 ! update SST/water-internal-energy at its timesteps.
-  if(IKPP==0)then
+  if(IKPP==0 .and. has_liquid_water)then
    leaf%soil_energy(mzg,i,j,1) = 334000.  &
      + 4186. * (leaf%seatp(i,j) + (leaf%seatf(i,j) - leaf%seatp(i,j)) &
      * timefac_sst - 273.15)
@@ -179,7 +179,7 @@ do j = ja,jz
    endif
 
 ! Update time-dependent vegetation LAI and fractional coverage
-   if (ip >= 2 .and. leaf%patch_area(i,j,ip) >= .009) then
+   if (ip >= 2 .and. leaf%patch_area(i,j,ip) >= .009 .and. has_vegetation) then
     if (isfcl>=1) CALL ndvi (ngrid                           &
         ,leaf%leaf_class  (i,j,ip)                           &
         ,leaf%veg_ndvip   (i,j,ip) ,leaf%veg_ndvic (i,j,ip)  &

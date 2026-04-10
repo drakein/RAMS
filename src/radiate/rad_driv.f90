@@ -328,7 +328,7 @@ elseif(jday>=247 .and. jday<=366) then
 endif
 eqt_julian_nudge = eqt_julian_nudge / 60.0
 ! cdec - cosine of declination
-declin = -23.5 * cos(6.283 / 365. * (jday + 9)) * pi180
+declin = -axial_tilt * cos(6.283 / days_per_year * (jday + 9)) * pi180
 cdec = cos(declin)
 
 do j = ja,jz
@@ -600,14 +600,14 @@ dayhr = (otmf-mod(otmf,10000.))/10000. + (mod(otmf,10000.)/6000.)
 jday = julday(omn,ody,oyr)
 
 !      sdec - sine of declination, cdec - cosine of declination
-declin = -23.5 * cos(6.283 / 365. * (jday + 9)) * pi180
+declin = -axial_tilt * cos(6.283 / days_per_year * (jday + 9)) * pi180
 sdec = sin(declin)
 cdec = cos(declin)
 
 ! Find the factor, solfac, to multiply the solar constant to correct
-! for Earth's varying distance to the sun.
+! for varying distance to the sun.
 
-d0 = 6.2831853 * float(jday-1) / 365.
+d0 = 6.2831853 * float(jday-1) / days_per_year
 d02 = d0 * 2.
 solfac = 1.000110 + 0.034221 * cos (d0) + 0.001280 * sin(d0)  &
    + 0.000719 * cos(d02) + 0.000077 * sin(d02)

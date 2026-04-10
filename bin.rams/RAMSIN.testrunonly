@@ -58,7 +58,7 @@
   10700., 11700., 12700., 13700., 14700., 15700., 16700.,
   17700., 18700., 19700.,
  
-   DTLONG   = 10.,          ! Coarse grid long timestep
+   DTLONG   = 2.,          ! Coarse grid long timestep
    NACOUST  = 5,           ! Small timestep ratio
 
    ! Nest ratios between this grid and the next coarser grid.
@@ -184,8 +184,8 @@
 
 ! History start (if RUNTYPE='HISTORY')
 
-   HFILIN   = './testrun.output/a-A-1991-04-26-213000-head.txt',
-                             ! Input state file name
+   HFILIN   = './mars.output/a-A-1991-04-26-213000-head.txt',
+                              ! Input state file name
 
 ! Analysis file input for assimilation: 1=yes, 0=no
 
@@ -198,7 +198,7 @@
 !  Analysis file output
  
    IOUTPUT  =  1,             ! 0-no files, 1-write files
-   AFILEPREF  = './testrun.output/a',  
+   AFILEPREF  = './mars.output/a',  
                               ! File prefix for all analysis files
                               !   state,mean,lite,both
                               
@@ -229,10 +229,10 @@
 
 ! Input topography variables
 
-   TOPFILES = './testrun.output/toph', ! Path and prefix for topo files. 
-   SFCFILES = './testrun.output/sfch', ! Path and prefix for surface files. 
-   SSTFPFX  = './testrun.output/ssth', ! Path and prefix for sst files
-   NDVIFPFX = './testrun.output/ndh',  ! Path and prefix for ndni files
+   TOPFILES = './mars.output/toph', ! Path and prefix for topo files. 
+   SFCFILES = './mars.output/sfch', ! Path and prefix for surface files. 
+   SSTFPFX  = './mars.output/ssth', ! Path and prefix for sst files
+   NDVIFPFX = './mars.output/ndh',  ! Path and prefix for ndni files
 
    ITOPTFLG = 2,0,0,0,           ! 2 - Fill data in "leaf3_init"
    ISSTFLG  = 2,2,0,0,           ! 0 - Interpolate from coarser grid
@@ -303,8 +303,8 @@
  
 ! Radiation parameters
  
-   ISWRTYP  = 3,             ! Shortwave radiation type
-   ILWRTYP  = 3,             ! Longwave radiation type
+   ISWRTYP  = 0,             ! Shortwave radiation type
+   ILWRTYP  = 0,             ! Longwave radiation type
                              !    0-none, 2-Mahrer/Pielke, 1-Chen, 3-Harrington
    RADFRQ   = 600.,          ! Freq. of radiation tendency update (s)
    LONRAD   = 1,             ! Longitudinal variation of shortwave  
@@ -340,7 +340,7 @@
                              ! vegetation files 
                              !    (min of 1, max of NPATCH-1)
                        
-   ISFCL    = 1,             ! Surface layer/soil/veg model
+   ISFCL    = 0,             ! Surface layer/soil/veg model
                              !  0-specified surface layer gradients
                              !  1-LEAF3 model, 2-SiB model
 
@@ -490,7 +490,7 @@
 
 !----- Microphysics ------------------------------------------------------
 
-   LEVEL = 3,                ! Moisture complexity level
+   LEVEL = 0,                ! Moisture complexity level
                              ! (0=dry, 1=vapor only, 2=cloud only,
                              !  3=full micro, 4=HUCM-SBM bin micro)
 
@@ -500,7 +500,7 @@
    SCMTIME = 1800.,          ! Time for SCM output (seconds)
 
    ICHECKMIC = 1,            ! Check Micro Negative & Nans: 0=Off,1=on
-   IMBUDGET = 3,             ! Micro budgets: 0=Off,1=partial,2=all,3=all+dust
+   IMBUDGET = 0,             ! Micro budgets: 0=Off,1=partial,2=all,3=all+dust
 
    IRIME   = 1,              ! Riming: 0-Bulk, 1-HybridBin 
    IPLAWS  = 2,              ! FallSpeed: 0-Original4.3 
@@ -539,7 +539,7 @@
 
 ! Aerosol parameters         ! See mic_init.f90 for setting profiles
                              ! ------------------------------------------
-   IAEROSOL = 1,             ! CCN-1,CCN-2: 0=off, 1=userset
+   IAEROSOL = 0,             ! CCN-1,CCN-2: 0=off, 1=userset
    ISALT    = 1,             ! Sea Salt: 0=off, 1=userset, 2=saltmodel
    IDUST    = 1,             ! Dust: 0=off, 1=userset 2=dustmodel
    IABCARB = 0,              ! Absorbing carbon: 0=off, 1=userset
@@ -551,12 +551,12 @@
                              !For IDUSTLOFT=1,read DustErodeFrac-Ginoux2001.txt
    DUSTFILE = '../etc/DustErodeFrac-Ginoux2001.txt',
 
-   ICCNLEV = 2,              ! Aerosol treatment level
+   ICCNLEV = 0,              ! Aerosol treatment level
                              ! 0 = no source or sink
                              ! 1 = nucleation + deposition sink
                              ! 2 = same as 1 + evaporation regeneration
 
-   IIFN = 3,                 ! Ice Nuclei treatment level
+   IIFN = 0,                 ! Ice Nuclei treatment level
                              ! 0 = no ice nuclei
                              ! 1 = Meyers formula (CIN_MAX)
                              ! 2 = DeMott(2010) (CIN_MAX)
@@ -566,7 +566,7 @@
                              ! 1 = DeMott(2010) (composite aerosol types)
                              ! 2 = DeMott(2014) (dust formula)
 
-   IAERORAD  = 1,            ! Aerosol-Radiation Model: 0 = Off, 1 = On
+   IAERORAD  = 0,            ! Aerosol-Radiation Model: 0 = Off, 1 = On
 
    IAERODEP  = 1,            ! Aerosol wet and dry deposition
                              ! (track scavenged aerosols if iccnlev>=2)
@@ -603,9 +603,9 @@
                   0.01e-6,1.00e-6,          !Regenerated 1 & 2 default
 
    ! Aerosol tracking flags: 0=off, 1=on
-   ITRKEPSILON = 1,        ! Tracking aerosol solubility for regeneration
-   ITRKDUST    = 1,        ! Tracking dust sub-species within hydrometeors
-   ITRKDUSTIFN = 1,        ! Tracing dust that served as ice nuclei
+   ITRKEPSILON = 0,        ! Tracking aerosol solubility for regeneration
+   ITRKDUST    = 0,        ! Tracking dust sub-species within hydrometeors
+   ITRKDUSTIFN = 0,        ! Tracing dust that served as ice nuclei
 
  $END
 

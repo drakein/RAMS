@@ -1,6 +1,7 @@
 !##############################################################################
 Subroutine date_abs_secs (indate1,seconds)
 
+use rconstants, only: seconds_per_day, days_per_year
 implicit none
 
 character(len=14) :: indate1
@@ -15,8 +16,8 @@ integer, external :: julday
 CALL date_unmake_big (year1,month1,date1,hour1,indate1)
 
 iy = year1 - 1900
-ndays = iy * 365 + (iy-1)/4 + julday(month1,date1,iy)
-s1= dble(ndays) *86400.
+ndays = iy * int(days_per_year) + (iy-1)/4 + julday(month1,date1,iy)
+s1= dble(ndays) * seconds_per_day
 s2= dble(hour1/10000)*3600.
 s3= dble(mod(hour1,10000)/100)*60.
 s4= dble(mod(hour1,100))
@@ -28,6 +29,7 @@ END SUBROUTINE date_abs_secs
 !##############################################################################
 Subroutine date_abs_secs2 (year1,month1,date1,hour1,seconds)
 
+use rconstants, only: seconds_per_day, days_per_year
 implicit none
 
 real(kind=8) :: seconds
@@ -39,8 +41,8 @@ integer :: year1,month1,date1,hour1,iy,ndays
 integer, external :: julday
 
 iy = year1 - 1900
-ndays = iy * 365 + (iy-1)/4 + julday(month1,date1,iy)
-s1= dble(ndays) *86400.
+ndays = iy * int(days_per_year) + (iy-1)/4 + julday(month1,date1,iy)
+s1= dble(ndays) * seconds_per_day
 s2= dble(hour1/10000)*3600.
 s3= dble(mod(hour1,10000)/100)*60.
 s4= dble(mod(hour1,100))
@@ -52,6 +54,7 @@ END SUBROUTINE date_abs_secs2
 !##############################################################################
 Subroutine date_secs_ymdt (seconds,iyear1,imonth1,idate1,ihour1)
 
+use rconstants, only: seconds_per_day, days_per_year
 implicit none
 
 real(kind=8) :: seconds,s1
@@ -70,10 +73,10 @@ s1=seconds
 do ny=0,10000
    ileap=0
    if(mod(1900+ny,4) == 0) ileap=1
-   s1=s1-(365.+ileap)*86400.
+   s1=s1-(days_per_year+ileap)*seconds_per_day
    if(s1 < 0.) then
       nyr=ny
-      s1=s1+(365.+ileap)*86400.
+      s1=s1+(days_per_year+ileap)*seconds_per_day
       exit
    endif
 enddo
@@ -84,9 +87,9 @@ iyear1=1900+nyr
 do nm=1,12
    ileap=0
    if(mod(1900+ny,4) == 0 .and. nm == 2) ileap=1
-   s1=s1-(mondays(nm)+ileap)*86400.
+   s1=s1-(mondays(nm)+ileap)*seconds_per_day
    if(s1 < 0.) then
-      s1=s1+(mondays(nm)+ileap)*86400.
+      s1=s1+(mondays(nm)+ileap)*seconds_per_day
       exit
    endif
 enddo
@@ -95,8 +98,8 @@ imonth1=nm
 ! s1 is now number of secs into the month
 !   Get date and time
 
-idate1=int(s1/86400.)
-s1=s1-idate1*86400.
+idate1=int(s1/seconds_per_day)
+s1=s1-idate1*seconds_per_day
 idate1=idate1+1 ! Since date starts at 1
 
 ihr=int(s1/3600.)
@@ -112,6 +115,7 @@ END SUBROUTINE date_secs_ymdt
 !##############################################################################
 Subroutine date_add_to_big (cindate,tinc,tunits,coutdate)
 
+use rconstants, only: seconds_per_day, days_per_year
 implicit none
 
 character(len=14) :: cindate,coutdate
@@ -130,7 +134,7 @@ integer :: inyear,inmonth,indate,inhour  &
 ttinc=tinc
 if(tunits.eq.'m') ttinc=tinc*60.
 if(tunits.eq.'h') ttinc=tinc*3600.
-if(tunits.eq.'d') ttinc=tinc*86400.
+if(tunits.eq.'d') ttinc=tinc*seconds_per_day
 !print*,'inc:',tinc,tunits,ttinc
 !print*,'big:',cindate
 CALL date_unmake_big (inyear,inmonth,indate,inhour,cindate)
@@ -154,6 +158,7 @@ END SUBROUTINE date_add_to_big
 Subroutine date_add_to (inyear,inmonth,indate,inhour  &
                         ,tinc,tunits,outyear,outmonth,outdate,outhour)
 
+use rconstants, only: seconds_per_day, days_per_year
 implicit none
 
 integer inyear,inmonth,indate,inhour  &
@@ -172,7 +177,7 @@ real(kind=8) :: ttinc,secs
 ttinc=tinc
 if(tunits.eq.'m') ttinc=tinc*60.
 if(tunits.eq.'h') ttinc=tinc*3600.
-if(tunits.eq.'d') ttinc=tinc*86400.
+if(tunits.eq.'d') ttinc=tinc*seconds_per_day
 !print*,'inc:',tinc,tunits,ttinc
 
 

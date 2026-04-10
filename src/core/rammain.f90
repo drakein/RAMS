@@ -2,6 +2,7 @@
 Program main
 
 use node_mod
+use rconstants, only: init_planet_constants
 
 implicit none
 
@@ -81,6 +82,9 @@ not_a_node = -1
 do i = 1, nmachs
   machnum(i) = i - 1  ! MPI process numbers go from 0 to n-1
 enddo
+
+! init planet specific physics constants
+call init_planet_constants('mars')
 
 ! run the model
 CALL rams_model (nl_fname)

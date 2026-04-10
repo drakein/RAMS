@@ -92,6 +92,8 @@ implicit none
 real :: leaf_class,timefac_ndvi,veg_ndvip,veg_ndvic,veg_ndvif
 integer :: ifm,nveg
 
+if (.not. has_vegetation) return
+
 nveg = nint(leaf_class)
 
 if (tai_max(nveg) >= .1) then
@@ -153,6 +155,8 @@ endif
 !  Compute LAI, vegetation roughness, albedo, vegfrac from time-dependent NDVI
 
 nveg = nint(leaf_class)
+
+if (.not. has_vegetation) return
 
 if (tai_max(nveg) < .1) then
 

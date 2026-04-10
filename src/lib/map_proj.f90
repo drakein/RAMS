@@ -155,6 +155,7 @@ Subroutine ll2lc (dcentlat,dcentlon,dinlat,dinlon,ri,rj &
 !routine to convert lat/lon pair to real i,j pair on Lambert
 !conformal Conic grid
 
+use rconstants, only: erad
 implicit none
 
 !     ***** Passed variables ********
@@ -184,11 +185,8 @@ real cone, rcentlat, rcentlon, rinlat, rinlon, roriglat,  &
 
 !     ***** Parameters **************
 
-!     radearth: mean radius of earth (m)
+real pi
 
-real radearth, pi
-
-parameter (radearth=6370997) ! (USGS Paper 1395)
 parameter (pi=3.14159265359)
 
 !     ***** Code ********************
@@ -230,8 +228,8 @@ rj= rj - yorig
 
 !     Convert to index
 
-ri= ri*radearth/spacing + 1.0
-rj= rj*radearth/spacing + 1.0
+ri= ri*erad/spacing + 1.0
+rj= rj*erad/spacing + 1.0
 
 !     Done
 
@@ -244,6 +242,7 @@ Subroutine lc2ll (dcentlat,dcentlon,qlat,qlon,ri,rj,doriglat,doriglon,spacing)
 !routine to convert real i,j pair on Lambert
 !conformal Conic grid to lat/lon
 
+use rconstants, only: erad
 implicit none
 
 !     ***** Passed variables ********
@@ -273,11 +272,8 @@ real cone, rcentlat, rcentlon, roriglat,  &
 
 !     ***** Parameters **************
 
-!     radearth: mean radius of earth (m)
+real pi
 
-real radearth, pi
-
-parameter (radearth=6370997) ! (USGS Paper 1395)
 parameter (pi=3.14159265359)
 
 !     ***** Code ********************
@@ -310,8 +306,8 @@ yorig= rho0 - rho*cos(theta)
 
 ! convert ri,rj to radians
 
-ri = (ri - 1.) * spacing / radearth
-rj = (rj - 1.) * spacing / radearth
+ri = (ri - 1.) * spacing / erad
+rj = (rj - 1.) * spacing / erad
 
 ! get ri,rj relative to rcentlat,rcentlon
 
@@ -484,11 +480,11 @@ Subroutine ll_rotate_lc (qlat,qlon,centlat,centlon,x,y)
 !     f
 !     others are scratch variables (see code)
 
+use rconstants, only: erad
 implicit none
 
 real :: qlat,qlon,centlat,centlon,x,y
 
-real, parameter :: radearth = 6370997           ! (USGS Paper 1395)
 real, parameter :: pi180 = 3.14159265359 / 180.
 
 real :: rcentlat,rcentlon,rqlat,rqlon,cone,Ffactor,rho,rho8999,theta
@@ -512,8 +508,8 @@ theta = cone * (rqlon - rcentlon)
 x = rho * sin(theta)
 y = - rho * cos(theta)
 
-x = x * radearth
-y = y * radearth
+x = x * erad
+y = y * erad
 
 return
 END SUBROUTINE ll_rotate_lc
@@ -585,6 +581,7 @@ END SUBROUTINE trueps60_ps
 !##############################################################################
 Subroutine w3fb07 (XI,XJ,ALAT1,ALON1,DX,ALONV,ALAT,ALON)
 
+use rconstants, only: erad
 implicit none
  
 ! ROUTINE:  W3FB07        GRID COORDS TO LAT/LON FOR GRIB
@@ -634,7 +631,7 @@ implicit none
 !   LANGUAGE: IBM VS FORTRAN
 !   MACHINE:  NAS
 
-real, parameter :: RERTH=6.3712E+6,PI=3.1416, SS60=1.86603
+real, parameter :: PI=3.1416, SS60=1.86603
 real ::xi,xj,alat1,alon1,dx,alonv,alat,alon,h,dxl,reflon,radpd,degprd &
       ,rebydx,ala1,rmll,alo1,polei,polej,xx,yy,r2,gi2,arccos
 
@@ -659,7 +656,7 @@ ENDIF
 
 RADPD = PI/180.0
 DEGPRD = 180./PI
-REBYDX = RERTH/DXL
+REBYDX = erad/DXL
 
 ! RADIUS TO LOWER LEFT HAND (LL) CORNER
 
@@ -701,6 +698,7 @@ END SUBROUTINE w3fb07
 !##############################################################################
 Subroutine w3fb06 (ALAT,ALON,ALAT1,ALON1,DX,ALONV,XI,XJ)
 
+use rconstants, only: erad
 implicit none
 
 real :: ALAT,ALON,ALAT1,ALON1,DX,ALONV,XI,XJ
@@ -709,7 +707,7 @@ real :: h,reflon,radpd,rebydx,ala1,alo1,polei,polej,ala,rm,alo,dxl,rmll
 ! ROUTINE:  W3FB06        LAT/LON TO POLA (I,J) FOR GRIB
 !   PRGMMR: STACKPOLE        ORG: NMC42       DATE:88-04-05
 
-real, parameter :: RERTH=6.3712E+6,PI=3.1416, SS60=1.86603
+real, parameter :: PI=3.1416, SS60=1.86603
 
 IF(DX.LT.0) THEN
    H = -1.
@@ -722,7 +720,7 @@ ELSE
 ENDIF
 
 RADPD = PI/180.0
-REBYDX = RERTH/DXL
+REBYDX = erad/DXL
 
 ALA1 =  ALAT1 * RADPD
 RMLL = REBYDX * COS(ALA1) * SS60/(1. + H * SIN(ALA1))

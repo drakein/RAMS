@@ -243,5 +243,20 @@ check: FORCE
 
 clean:
 	@echo ""
-	rm -f $(ARC) $(EXE) $(BASE) *.o *.mod *.f
+	rm -f $(ARC) $(EXE) $(BASE) *.o *.mod *.f test_rconstants test_orbital test_map_proj test_topography
 	@echo ""
+
+test: $(ARC) FORCE
+	@echo "Building unit tests..."
+	$(F_COMP) -o test_rconstants $(MODEL)/lib/test_rconstants.f90 $(F_OPTS2) $(INCLUDES) $(LOADER_OPTS) $(ARC) $(HDF5_LIBS) $(LIBS) $(PAR_LIBS)
+	@echo "Running planetary constants test:"
+	./test_rconstants
+	$(F_COMP) -o test_orbital $(MODEL)/lib/test_orbital.f90 $(F_OPTS2) $(INCLUDES) $(LOADER_OPTS) $(ARC) $(HDF5_LIBS) $(LIBS) $(PAR_LIBS)
+	@echo "Running planetary orbital test:"
+	./test_orbital
+	$(F_COMP) -o test_map_proj $(MODEL)/lib/test_map_proj.f90 $(F_OPTS2) $(INCLUDES) $(LOADER_OPTS) $(ARC) $(HDF5_LIBS) $(LIBS) $(PAR_LIBS)
+	@echo "Running map projection boundary test:"
+	./test_map_proj
+	$(F_COMP) -o test_topography $(MODEL)/lib/test_topography.f90 $(F_OPTS2) $(INCLUDES) $(LOADER_OPTS) $(ARC) $(HDF5_LIBS) $(LIBS) $(PAR_LIBS)
+	@echo "Running topographical support assessment test:"
+	./test_topography

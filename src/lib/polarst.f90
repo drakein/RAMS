@@ -1,16 +1,19 @@
 !##############################################################################
 Subroutine ll_xy (qlat,qlon,polelat,polelon,x,y)
 
+use rconstants, only: erad
 implicit none
 
 real :: qlat,qlon,polelat,polelon,x,y
-real, parameter :: erad=6.367e6,erad2=1.2734e7,pi180=3.14159265/180.
+real :: erad2
+real, parameter :: pi180=3.14159265/180.
 real :: sinplat,cosplat,sinplon,cosplon,sinqlat,cosqlat,sinqlon,cosqlon &
        ,x3p,y3p,z3p, z3q,x3q,y3q, xq,yq,zq, t
        
 ! Evaluate sine and cosine of latitude and longitude of pole point p and
 ! input point q.
 
+erad2 = erad * 2.0
 sinplat = sin(polelat * pi180)
 cosplat = cos(polelat * pi180)
 sinplon = sin(polelon * pi180)
@@ -64,15 +67,18 @@ END SUBROUTINE ll_xy
 !##############################################################################
 Subroutine xy_ll (qlat,qlon,polelat,polelon,x,y)
 
+use rconstants, only: erad
 implicit none
 
 real :: qlat,qlon,polelat,polelon,x,y
-real, parameter :: erad=6.367e6,erad2=1.2734e7,pi180=3.14159265/180.
+real :: erad2
+real, parameter :: pi180=3.14159265/180.
 real :: sinplat,cosplat,sinplon,cosplon &
        ,x3p,y3p,z3p, z3q,x3q,y3q, xq,yq,zq, t,d,alpha,r3q
 
 ! Evaluate sine and cosine of latitude and longitude of pole point p.
 
+erad2 = erad * 2.0
 sinplat = sin(polelat * pi180)
 cosplat = cos(polelat * pi180)
 sinplon = sin(polelon * pi180)
